@@ -90,6 +90,11 @@ public class ArrayDeque<Item> {
     }
 
     public Item removeFirst(){
+        if (isEmpty()){
+            size = 0;
+            return null;
+        }
+
         int i = cirOperate(nextFirst, 1);
         Item f = items[i];
 
@@ -104,6 +109,11 @@ public class ArrayDeque<Item> {
     }
 
     public Item removeLast(){
+        if (isEmpty()){
+            size = 0;
+            return null;
+        }
+
         int i = cirOperate(nextLast, 1);
         Item l = items[i];
 
