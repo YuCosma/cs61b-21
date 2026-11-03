@@ -113,6 +113,7 @@ public class LinkedListDeque<Bob>{
             return nodeRecursive(index).item;
         }
 
+        //help method of getRecursive
         public Node nodeRecursive(int index){
             Node obj = sentinel.next;
 
@@ -125,7 +126,7 @@ public class LinkedListDeque<Bob>{
 
         public void printDeque() {
             for (int i = 0; i < size; i++) {
-                System.out.print(get(i) + "");
+                System.out.print(get(i) + " ");
             }
             System.out.println();
         }
