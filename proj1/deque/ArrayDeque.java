@@ -59,7 +59,7 @@ public class ArrayDeque<Item> {
         nextLast = cirOperate(nextLast, 1);
     }
 
-    public void resize(int capacity){
+    private void resize(int capacity){
         Item[] temp = (Item[]) new Object[size];
         for (int i = 0; i < size; i++){
             temp[i] = get(i);
