@@ -1,6 +1,8 @@
 package deque;
 
-public class LinkedListDeque<Bob>{
+import java.util.Iterator;
+
+public class LinkedListDeque<Bob> implements Iterable<Bob>, Deque<Bob>{
         public class Node {
             Node pre;
             Bob item;
@@ -22,6 +24,55 @@ public class LinkedListDeque<Bob>{
             sentinel.next = sentinel;
             size = 0;
         }
+
+        public Iterator<Bob> iterator() {
+            return new LinkedListDequeIterator();
+        }
+
+        private class LinkedListDequeIterator implements Iterator<Bob>{
+            private int i;
+
+            public LinkedListDequeIterator() {
+                i = 0;
+            }
+
+            public boolean hasNext(){
+                return i < size;
+            }
+
+            public Bob next() {
+                Bob returnBob = get(i);
+                i++;
+                return returnBob;
+            }
+
+        }
+
+        @Override
+        public boolean equals(Object o){
+            boolean same = o instanceof Deque;
+            if (!same) {
+                return false;
+            }
+            if (this == o){
+                return true;
+            }
+            //Deque needs <>, from deepseek, or other is an object, actually.
+            Deque<Bob> other = (Deque)o;
+            if (this.size() != other.size()){
+                return false;
+            }
+            for (int i = 0; i < size; i ++){
+                Bob th = this.get(i);
+                //here was some trouble
+                Bob ot = other.get(i);
+                if (!th.equals(ot)){
+                    return false;
+                }
+            }
+            return true;
+        }
+
 
         public LinkedListDeque(Bob item){
             sentinel = new Node(null, null, null);

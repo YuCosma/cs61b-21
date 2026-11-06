@@ -18,7 +18,7 @@ public class ArrayDeque<Item> implements Iterable<Item>, Deque<Item> {
     }
 
     public Iterator<Item> iterator(){
-        return new ArrayDeque.ArrayDequeIterator();
+        return new ArrayDequeIterator();
     }
 
     private class ArrayDequeIterator implements Iterator<Item>{
@@ -55,7 +55,7 @@ public class ArrayDeque<Item> implements Iterable<Item>, Deque<Item> {
         }
         for (int i = 0; i < size; i ++){
             Item th = this.get(i);
-            //here some trouble
+            //here was some trouble
             Item ot = other.get(i);
             if (!th.equals(ot)){
                 return false;
