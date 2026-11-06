@@ -1,6 +1,8 @@
 package deque;
 
-public class ArrayDeque<Item> {
+import java.util.Iterator;
+
+public class ArrayDeque<Item> implements Iterable<Item>, Deque<Item> {
 
     private Item[] items;
     private int size;
@@ -13,6 +15,53 @@ public class ArrayDeque<Item> {
     public ArrayDeque(){
         items = (Item[]) new Object[INITI_CAPACITY];
         size = 0;
+    }
+
+    public Iterator<Item> iterator(){
+        return new ArrayDeque.ArrayDequeIterator();
+    }
+
+    private class ArrayDequeIterator implements Iterator<Item>{
+        private int i;
+
+        public ArrayDequeIterator(){
+            i = 0;
+        }
+
+        public boolean hasNext(){
+            return i < size;
+        }
+
+        public Item next(){
+            Item returnItem = get(i);
+            i++;
+            return returnItem;
+        }
+    }
+
+    @Override
+    public boolean equals(Object o){
+        boolean same = o instanceof Deque;
+        if (!same) {
+            return false;
+        }
+        if (this == o){
+            return true;
+        }
+        //Deque needs <>, from deepseek, or other is an object, actually.
+        Deque<Item> other = (Deque)o;
+        if (this.size() != other.size()){
+            return false;
+        }
+        for (int i = 0; i < size; i ++){
+            Item th = this.get(i);
+            //here some trouble
+            Item ot = other.get(i);
+            if (!th.equals(ot)){
+                return false;
+            }
+        }
+        return true;
     }
 
     //the expression of next when they are plused or subed
