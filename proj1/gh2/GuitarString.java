@@ -2,7 +2,6 @@ package gh2;
 
 import deque.ArrayDeque;
 import deque.Deque;
-import edu.princeton.cs.algs4.StdAudio;
 
 //Note: This file will not compile until you complete the Deque implementations
 public class GuitarString {
@@ -22,10 +21,9 @@ public class GuitarString {
         //       cast the result of this division operation into an int. For
         //       better accuracy, use the Math.round() function before casting.
         //       Your should initially fill your buffer array with zeros.
-
+        int capacity = (int)Math.round((SR/frequency));
         buffer = new ArrayDeque<>();
-        int capacity = Math.round((float) (SR/DECAY));
-        while (buffer.size() < capacity + 1) {
+        while (buffer.size() < capacity) {
             buffer.addFirst(0.0);
         }
 
@@ -43,16 +41,11 @@ public class GuitarString {
         //       are different from each other. It means you should repeatedly call
         //       Math.random() - 0.5 to generate new random numbers for each array index.
 
-        int capacity = buffer.size();
-        while (!buffer.isEmpty()) {
-            buffer.removeFirst();
-        }
-
-        while (buffer.size() < capacity + 1) {
+        for (int i = 0; i < buffer.size(); i++){
             double r = Math.random() - 0.5;
-            buffer.addFirst(r);
+            buffer.removeFirst();
+            buffer.addLast(r);
         }
-
     }
 
     /* Advance the simulation one time step by performing one iteration of
@@ -62,8 +55,7 @@ public class GuitarString {
         // TODO: Dequeue the front sample and enqueue a new sample that is
         //       the average of the two multiplied by the DECAY factor.
         //       **Do not call StdAudio.play().**
-        double newDouble = (buffer.get(0) + buffer.get(1)) * DECAY;
-        buffer.removeFirst();
+        double newDouble = (buffer.removeFirst() + buffer.get(0)) /2 * DECAY;
         buffer.addLast(newDouble);
     }
 
@@ -71,10 +63,6 @@ public class GuitarString {
     public double sample() {
         // TODO: Return the correct thing.
         return buffer.get(0);
-    }
-
-    public static void main(String[] args) {
-        StdAudio.play(0.333);
     }
 }
     // TODO: Remove all comments that say TODO when you're done.
