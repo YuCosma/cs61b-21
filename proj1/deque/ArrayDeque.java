@@ -123,10 +123,6 @@ public class ArrayDeque<Item> implements Iterable<Item>, Deque<Item> {
         nextLast = size;
     }
 
-    public boolean isEmpty(){
-        return size == 0;
-    }
-
     public int size(){
         return size;
     }
