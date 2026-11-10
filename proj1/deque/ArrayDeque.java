@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
 
-    private T[] ts;
+    private T[] array;
     private int size;
     private int INITI_CAPACITY = 8;
 
@@ -13,7 +13,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     private int nextLast = 0;
 
     public ArrayDeque() {
-        ts = (T[]) new Object[INITI_CAPACITY];
+        array = (T[]) new Object[INITI_CAPACITY];
         size = 0;
     }
 
@@ -90,7 +90,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         }
 
         size++;
-        ts[nextFirst] = i;
+        array[nextFirst] = i;
         nextFirst = cirOperate(nextFirst, -1);
     }
 
@@ -100,7 +100,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         }
 
         size++;
-        ts[nextLast] = i;
+        array[nextLast] = i;
         nextLast = cirOperate(nextLast, 1);
     }
 
@@ -110,8 +110,8 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             temp[i] = get(i);
         }
 
-        ts = (T[]) new Object[c];
-        System.arraycopy(temp, 0, ts, 0, size);
+        array = (T[]) new Object[c];
+        System.arraycopy(temp, 0, array, 0, size);
 
         this.capacity = c;
 
@@ -137,10 +137,10 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         }
 
         int i = cirOperate(nextFirst, 1);
-        T f = ts[i];
+        T f = array[i];
 
         nextFirst = i;
-        ts[i] = null;
+        array[i] = null;
         size--;
 
         //Need to cut array
@@ -155,11 +155,11 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             return null;
         }
 
-        int i = cirOperate(nextLast, 1);
-        T l = ts[i];
+        int i = cirOperate(nextLast, -1);
+        T l = array[i];
 
         nextLast = i;
-        ts[i] = null;
+        array[i] = null;
         size--;
 
         //Need to cut array
@@ -178,10 +178,10 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
                 temp[i] = get(i);
             }
             capacity = capacity / 2;
-            ts = (T[]) new Object[capacity];
+            array = (T[]) new Object[capacity];
             nextFirst = capacity - 1;
             nextLast = size;
-            System.arraycopy(temp, 0, ts, 0, size);
+            System.arraycopy(temp, 0, array, 0, size);
         }
     }
 
@@ -195,7 +195,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         }
 
         i = cirOperate(i, 1);
-        return ts[i];
+        return array[i];
     }
 
 }

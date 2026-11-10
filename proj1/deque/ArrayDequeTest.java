@@ -26,6 +26,7 @@ public class ArrayDequeTest {
         for (int i = 0; i < 8; i++) {
             a.addFirst(i);
         }
-        assertTrue(a.removeLast() == 7);
+        int l = a.removeLast();
+        assertTrue(l == 0);
     }
 }
