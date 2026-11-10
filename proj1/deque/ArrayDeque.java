@@ -2,61 +2,57 @@ package deque;
 
 import java.util.Iterator;
 
-public class ArrayDeque<Item> implements Iterable<Item>, Deque<Item> {
+public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
 
-    private Item[] items;
+    private T[] ts;
     private int size;
-    final int INITI_CAPACITY = 8;
+    private int INITI_CAPACITY = 8;
 
     private int capacity = INITI_CAPACITY;
     private int nextFirst = 7;
     private int nextLast = 0;
 
-    public ArrayDeque(){
-        items = (Item[]) new Object[INITI_CAPACITY];
+    public ArrayDeque() {
+        ts = (T[]) new Object[INITI_CAPACITY];
         size = 0;
     }
 
-    public Iterator<Item> iterator(){
+    public Iterator<T> iterator() {
         return new ArrayDequeIterator();
     }
 
-    private class ArrayDequeIterator implements Iterator<Item>{
-        private int i;
+    private class ArrayDequeIterator implements Iterator<T> {
+        private int i = 0;
 
-        public ArrayDequeIterator(){
-            i = 0;
-        }
-
-        public boolean hasNext(){
+        public boolean hasNext() {
             return i < size;
         }
 
-        public Item next(){
-            Item returnItem = get(i);
+        public T next() {
+            T returnT = get(i);
             i++;
-            return returnItem;
+            return returnT;
         }
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         boolean same = o instanceof Deque;
         if (!same) {
             return false;
         }
-        if (this == o){
+        if (this == o) {
             return true;
         }
         //Deque needs <>, from deepseek, or other is an object, actually.
-        Deque<Item> other = (Deque)o;
-        if (this.size() != other.size()){
+        Deque<T> other = (Deque) o;
+        if (this.size() != other.size()) {
             return false;
         }
-        for (int i = 0; i < size; i ++){
-            Item th = this.get(i);
+        for (int i = 0; i < size; i++) {
+            T th = this.get(i);
             //here was some trouble
-            Item ot = other.get(i);
+            T ot = other.get(i);
             if (!th.equals(ot)){
                 return false;
             }
@@ -67,19 +63,19 @@ public class ArrayDeque<Item> implements Iterable<Item>, Deque<Item> {
     //the expression of next when they are plused or subed
     //increment = 1 --> plus
     //increment = -1 --> sub
-    private int cirOperate(int i, int increment){
-        switch (increment){
+    private int cirOperate(int i, int increment) {
+        switch (increment) {
             case 1:
-                if (i == capacity - 1){
+                if (i == capacity - 1) {
                     i = 0;
-                }else {
+                } else {
                     i++;
                 }
                 break;
             case -1:
-                if (i == 0){
+                if (i == 0) {
                     i = capacity - 1;
-                }else {
+                } else {
                     i--;
                 }
                 break;
@@ -88,63 +84,63 @@ public class ArrayDeque<Item> implements Iterable<Item>, Deque<Item> {
         return i;
     }
 
-    public void addFirst(Item i){
-        if (size == capacity){
+    public void addFirst(T i) {
+        if (size == capacity) {
             resize(size * 2);
         }
 
         size++;
-        items[nextFirst] = i;
+        ts[nextFirst] = i;
         nextFirst = cirOperate(nextFirst, -1);
     }
 
-    public void addLast(Item i){
-        if (size == capacity){
+    public void addLast(T i) {
+        if (size == capacity) {
             resize(size * 2);
         }
 
         size++;
-        items[nextLast] = i;
+        ts[nextLast] = i;
         nextLast = cirOperate(nextLast, 1);
     }
 
-    private void resize(int capacity){
-        Item[] temp = (Item[]) new Object[size];
+    private void resize(int c) {
+        T[] temp = (T[]) new Object[size];
         for (int i = 0; i < size; i++){
             temp[i] = get(i);
         }
 
-        items = (Item[]) new Object[capacity];
-        System.arraycopy(temp, 0, items, 0, size);
+        ts = (T[]) new Object[c];
+        System.arraycopy(temp, 0, ts, 0, size);
 
-        this.capacity = capacity;
+        this.capacity = c;
 
-        nextFirst = capacity - 1;
+        nextFirst = c - 1;
         nextLast = size;
     }
 
-    public int size(){
+    public int size() {
         return size;
     }
 
-    public void printDeque(){
-        for (int i = 0; i < size; i++){
+    public void printDeque() {
+        for (int i = 0; i < size; i++) {
             System.out.print(get(i) + " ");
         }
         System.out.println();
     }
 
-    public Item removeFirst(){
-        if (isEmpty()){
+    public T removeFirst() {
+        if (isEmpty()) {
             size = 0;
             return null;
         }
 
         int i = cirOperate(nextFirst, 1);
-        Item f = items[i];
+        T f = ts[i];
 
         nextFirst = i;
-        items[i] = null;
+        ts[i] = null;
         size--;
 
         //Need to cut array
@@ -153,17 +149,17 @@ public class ArrayDeque<Item> implements Iterable<Item>, Deque<Item> {
         return f;
     }
 
-    public Item removeLast(){
-        if (isEmpty()){
+    public T removeLast() {
+        if (isEmpty()) {
             size = 0;
             return null;
         }
 
         int i = cirOperate(nextLast, 1);
-        Item l = items[i];
+        T l = ts[i];
 
         nextLast = i;
-        items[i] =null;
+        ts[i] = null;
         size--;
 
         //Need to cut array
@@ -173,32 +169,33 @@ public class ArrayDeque<Item> implements Iterable<Item>, Deque<Item> {
     }
 
     //when capacity >= 16 and R > 4, cut the array
-    private void cutArray(){
-        double R = (double)capacity / (double)size;
+    private void cutArray() {
+        double R = (double) capacity / (double) size;
 
-        if (capacity > 15 && R > 4.0){
-            Item[] temp = (Item[]) new Object[size];
-            for (int i = 0; i < size; i++){
+        if (capacity > 15 && R > 4.0) {
+            T[] temp = (T[]) new Object[size];
+            for (int i = 0; i < size; i++) {
                 temp[i] = get(i);
             }
             capacity = capacity / 2;
-            items = (Item[]) new Object[capacity];
+            ts = (T[]) new Object[capacity];
             nextFirst = capacity - 1;
             nextLast = size;
-            System.arraycopy(temp, 0, items, 0, size);
+            System.arraycopy(temp, 0, ts, 0, size);
         }
     }
 
-    public Item get(int index){
+    public T get(int index) {
         int i = nextFirst;
         int count = 0;
 
-        while (count != index){
+        while (count != index) {
             i = cirOperate(i, 1);
             count++;
         }
 
         i = cirOperate(i, 1);
-        return items[i];
+        return ts[i];
     }
+
 }

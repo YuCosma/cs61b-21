@@ -2,175 +2,172 @@ package deque;
 
 import java.util.Iterator;
 
-public class LinkedListDeque<Bob> implements Iterable<Bob>, Deque<Bob>{
-        public class Node {
-            Node pre;
-            Bob item;
-            Node next;
+public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
+    private class Node {
+        Node pre;
+        T item;
+        Node next;
 
-            public Node(Node p, Bob i, Node n){
-                pre = p;
-                item = i;
-                next = n;
-            }
+        public Node(Node p, T i, Node n) {
+            pre = p;
+            item = i;
+            next = n;
+        }
+    }
+
+    private Node sentinel;
+    private int size;
+
+    public LinkedListDeque() {
+        sentinel = new Node(null, null, null);
+        sentinel.pre = sentinel;
+        sentinel.next = sentinel;
+        size = 0;
+    }
+
+    public Iterator<T> iterator() {
+        return new LinkedListDequeIterator();
+    }
+
+    private class LinkedListDequeIterator implements Iterator<T> {
+        private int i;
+
+        public boolean hasNext(){
+            return i < size;
         }
 
-        private Node sentinel;
-        private int size;
-
-        public LinkedListDeque(){
-            sentinel = new Node(null, null, null);
-            sentinel.pre = sentinel;
-            sentinel.next = sentinel;
-            size = 0;
+        public T next() {
+            T returnT = get(i);
+            i++;
+            return returnT;
         }
 
-        public Iterator<Bob> iterator() {
-            return new LinkedListDequeIterator();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        boolean same = o instanceof Deque;
+        if (!same) {
+            return false;
         }
-
-        private class LinkedListDequeIterator implements Iterator<Bob>{
-            private int i;
-
-            public LinkedListDequeIterator() {
-                i = 0;
-            }
-
-            public boolean hasNext(){
-                return i < size;
-            }
-
-            public Bob next() {
-                Bob returnBob = get(i);
-                i++;
-                return returnBob;
-            }
-
-        }
-
-        @Override
-        public boolean equals(Object o){
-            boolean same = o instanceof Deque;
-            if (!same) {
-                return false;
-            }
-            if (this == o){
-                return true;
-            }
-            //Deque needs <>, from deepseek, or other is an object, actually.
-            Deque<Bob> other = (Deque)o;
-            if (this.size() != other.size()){
-                return false;
-            }
-            for (int i = 0; i < size; i ++){
-                Bob th = this.get(i);
-                //here was some trouble
-                Bob ot = other.get(i);
-                if (!th.equals(ot)){
-                    return false;
-                }
-            }
+        if (this == o) {
             return true;
         }
-
-
-        public LinkedListDeque(Bob item){
-            sentinel = new Node(null, null, null);
-            sentinel.pre = sentinel;
-            sentinel.next = sentinel;
-
-            sentinel.next = new Node(sentinel, item, sentinel);
-            sentinel.pre = sentinel.next;
-            size = 1;
+        //Deque needs <>, from deepseek, or other is an object, actually.
+        Deque<T> other = (Deque) o;
+        if (this.size() != other.size()) {
+            return false;
         }
-
-        public void addFirst(Bob item){
-            Node p = sentinel.next;
-            p.pre = new Node(sentinel, item, p);
-            sentinel.next = p.pre;
-            p.pre.next = p;
-            p.pre.pre =sentinel;
-            size++;
-        }
-
-        public void addLast(Bob item){
-            Node p = sentinel.pre;
-            p.next = new Node(p, item, sentinel);
-            sentinel.pre = p.next;
-            p.next.pre = p;
-            p.next.next = sentinel;
-            size++;
-        }
-
-        public int size(){
-            return size;
-        }
-
-        public Bob removeFirst(){
-
-            if (size == 0){
-                return null;
+        for (int i = 0; i < size; i++) {
+            T th = this.get(i);
+            //here was some trouble
+            T ot = other.get(i);
+            if (!th.equals(ot)){
+                return false;
             }
+        }
+        return true;
+    }
 
-            Bob first = sentinel.next.item;
-            Node p = sentinel.next;
 
-            sentinel.next = p.next;
-            p.pre = null;
-            p.next.pre = sentinel;
-            p.next = null;
+    public LinkedListDeque(T item) {
+        sentinel = new Node(null, null, null);
+        sentinel.pre = sentinel;
+        sentinel.next = sentinel;
 
-            size--;
+        sentinel.next = new Node(sentinel, item, sentinel);
+        sentinel.pre = sentinel.next;
+        size = 1;
+    }
 
-            return first;
+    public void addFirst(T item) {
+        Node p = sentinel.next;
+        p.pre = new Node(sentinel, item, p);
+        sentinel.next = p.pre;
+        p.pre.next = p;
+        p.pre.pre = sentinel;
+        size++;
+    }
+
+    public void addLast(T item) {
+        Node p = sentinel.pre;
+        p.next = new Node(p, item, sentinel);
+        sentinel.pre = p.next;
+        p.next.pre = p;
+        p.next.next = sentinel;
+        size++;
+    }
+
+    public int size(){
+        return size;
+    }
+
+    public T removeFirst() {
+
+        if (size == 0) {
+            return null;
         }
 
-        public Bob removeLast(){
+        T first = sentinel.next.item;
+        Node p = sentinel.next;
 
-            if (size == 0){
-                return null;
-            }
+        sentinel.next = p.next;
+        p.pre = null;
+        p.next.pre = sentinel;
+        p.next = null;
 
-            Bob last = sentinel.pre.item;
-            Node p = sentinel.pre;
-            p.next = null;
-            p.pre.next = sentinel;
-            sentinel.pre = p.pre;
-            p.pre = null;
+        size--;
 
-            size--;
+        return first;
+    }
 
-            return last;
+    public T removeLast() {
+
+        if (size == 0){
+            return null;
         }
 
-        public Bob get(int index){
-            Node obj = sentinel.next;
-            for (int i = 0; i < index; i++){
-                obj = obj.next;
-            }
+        T last = sentinel.pre.item;
+        Node p = sentinel.pre;
+        p.next = null;
+        p.pre.next = sentinel;
+        sentinel.pre = p.pre;
+        p.pre = null;
 
-            return obj.item;
+        size--;
+
+        return last;
+    }
+
+    public T get(int index) {
+        Node obj = sentinel.next;
+        for (int i = 0; i < index; i++){
+            obj = obj.next;
         }
 
-        public Bob getRecursive(int index){
-            return nodeRecursive(index).item;
+        return obj.item;
+    }
+
+    public T getRecursive(int index) {
+        return nodeRecursive(index).item;
+    }
+
+    //help method of getRecursive
+    public Node nodeRecursive(int index) {
+        Node obj = sentinel.next;
+
+        if (index == 0){
+            return obj;
         }
 
-        //help method of getRecursive
-        public Node nodeRecursive(int index){
-            Node obj = sentinel.next;
+        return nodeRecursive(index - 1).next;
+    }
 
-            if (index == 0){
-                return obj;
-            }
-
-            return nodeRecursive(index - 1).next;
+    public void printDeque() {
+        for (int i = 0; i < size; i++) {
+            System.out.print(get(i) + " ");
         }
+        System.out.println();
+    }
 
-        public void printDeque() {
-            for (int i = 0; i < size; i++) {
-                System.out.print(get(i) + " ");
-            }
-            System.out.println();
-        }
 }

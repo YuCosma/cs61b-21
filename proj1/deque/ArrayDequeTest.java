@@ -1,6 +1,7 @@
 package deque;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class ArrayDequeTest {
 
@@ -16,5 +17,15 @@ public class ArrayDequeTest {
             System.out.print(a.removeFirst() + " ");
         }
         System.out.println();
+    }
+
+    @Test
+    public void remove(){
+        ArrayDeque<Integer> a = new ArrayDeque<>();
+
+        for (int i = 0; i < 8; i++) {
+            a.addFirst(i);
+        }
+        assertTrue(a.removeLast() == 7);
     }
 }
