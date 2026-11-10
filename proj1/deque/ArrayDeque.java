@@ -186,15 +186,18 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     }
 
     public T get(int index) {
-        int i = nextFirst;
-        int count = 0;
+//        int i = nextFirst;
+//        int count = 0;
+//
+//        while (count != index) {
+//            i = cirOperate(i, 1);
+//            count++;
+//        }
+//
+//        i = cirOperate(i, 1);
+//        return array[i];
 
-        while (count != index) {
-            i = cirOperate(i, 1);
-            count++;
-        }
-
-        i = cirOperate(i, 1);
-        return array[i];
+        // DeepSeek tell me this, It's much more simpler. Magic of Bool/
+        return array[(nextFirst + 1 + index) % capacity];
     }
 }
