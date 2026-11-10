@@ -53,7 +53,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             T th = this.get(i);
             //here was some trouble
             T ot = other.get(i);
-            if (!th.equals(ot)){
+            if (!th.equals(ot)) {
                 return false;
             }
         }
@@ -106,7 +106,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
 
     private void resize(int c) {
         T[] temp = (T[]) new Object[size];
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             temp[i] = get(i);
         }
 
@@ -197,5 +197,4 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         i = cirOperate(i, 1);
         return array[i];
     }
-
 }

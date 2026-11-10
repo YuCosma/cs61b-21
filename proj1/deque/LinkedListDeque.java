@@ -8,7 +8,7 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
         T item;
         Node next;
 
-        public Node(Node p, T i, Node n) {
+        Node(Node p, T i, Node n) {
             pre = p;
             item = i;
             next = n;
@@ -32,7 +32,7 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
     private class LinkedListDequeIterator implements Iterator<T> {
         private int i;
 
-        public boolean hasNext(){
+        public boolean hasNext() {
             return i < size;
         }
 
@@ -62,22 +62,11 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
             T th = this.get(i);
             //here was some trouble
             T ot = other.get(i);
-            if (!th.equals(ot)){
+            if (!th.equals(ot)) {
                 return false;
             }
         }
         return true;
-    }
-
-
-    public LinkedListDeque(T item) {
-        sentinel = new Node(null, null, null);
-        sentinel.pre = sentinel;
-        sentinel.next = sentinel;
-
-        sentinel.next = new Node(sentinel, item, sentinel);
-        sentinel.pre = sentinel.next;
-        size = 1;
     }
 
     public void addFirst(T item) {
@@ -98,7 +87,7 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
         size++;
     }
 
-    public int size(){
+    public int size() {
         return size;
     }
 
@@ -123,7 +112,7 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
 
     public T removeLast() {
 
-        if (size == 0){
+        if (size == 0) {
             return null;
         }
 
@@ -141,7 +130,7 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
 
     public T get(int index) {
         Node obj = sentinel.next;
-        for (int i = 0; i < index; i++){
+        for (int i = 0; i < index; i++) {
             obj = obj.next;
         }
 
@@ -153,10 +142,10 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
     }
 
     //help method of getRecursive
-    public Node nodeRecursive(int index) {
+    private Node nodeRecursive(int index) {
         Node obj = sentinel.next;
 
-        if (index == 0){
+        if (index == 0) {
             return obj;
         }
 
@@ -169,5 +158,4 @@ public class LinkedListDeque<T> implements Iterable<T>, Deque<T> {
         }
         System.out.println();
     }
-
 }

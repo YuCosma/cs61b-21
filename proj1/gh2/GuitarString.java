@@ -16,7 +16,7 @@ public class GuitarString {
 
     /* Create a guitar string of the given frequency.  */
     public GuitarString(double frequency) {
-        int capacity = (int)Math.round((SR/frequency));
+        int capacity = (int) Math.round((SR / frequency));
         buffer = new ArrayDeque<>();
         while (buffer.size() < capacity) {
             buffer.addFirst(0.0);
@@ -37,7 +37,7 @@ public class GuitarString {
      * the Karplus-Strong algorithm.
      */
     public void tic() {
-        double newDouble = (buffer.removeFirst() + buffer.get(0)) /2 * DECAY;
+        double newDouble = (buffer.removeFirst() + buffer.get(0)) / 2 * DECAY;
         buffer.addLast(newDouble);
     }
 
